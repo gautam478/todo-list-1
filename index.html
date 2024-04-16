@@ -14,12 +14,12 @@
     #heading {
       font-size: 35px;
     }
-    #input {
+    .input {
       height: 30px;
       width: 302px;
       outline: none;
       font-size: 20px;
-      margin-top: 8px;
+      margin-top: 20px;
       border: none;
       border-radius: 5px;
     }
@@ -79,8 +79,9 @@
 <body>
   <div id="heading">T O D O</div>
   <form id="form" action="#" style="width: 308px;">
-    <input type="text" name="" id="input" autocomplete="off" spellcheck="false" placeholder="create a new todo..">
+    <input type="text" class="input" id="input" autocomplete="off" spellcheck="false" placeholder="create a new todo..">
   </form>
   <div id="output"></div>
+  <input type="text" class="input" id="search" autocomplete="off" spellcheck="false" placeholder="search here..">
 </body>
 </html>

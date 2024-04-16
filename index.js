@@ -1,14 +1,15 @@
-const form = document.getElementById('form')
-const input = document.getElementById('input')
-const output = document.getElementById('output')
+const form = document.getElementById('form');
+const input = document.getElementById('input');
+const output = document.getElementById('output');
+const search = document.getElementById('search');
 
-let isEditingDone = true;
+let isEditingDone = true, index = -1;
 let array = ['eat', 'study', 'sleep', 'repeat'];
-render();
+render(array);
 
-function render(){
+function render(arr){
     output.innerHTML = '';
-    for (let i = 0; i < array.length; i++) output.innerHTML += addTask(i, array[i]);
+    for (let i = 0; i < arr.length; i++) output.innerHTML += addTask(i, arr[i]);
     input.value = '';
 }
 
@@ -24,15 +25,15 @@ function addTask(index, title) {
 form.onsubmit = () => {
     if (input.value !== '' && isEditingDone) {
         array.push(input.value);
-        render();
+        render(array);
     }
 }
 
 function remove(element) {
     if (isEditingDone) {
-        let index = parseInt(element.getAttribute('id').split('-')[1]);
+        index = parseInt(element.getAttribute('id').split('-')[1]);
         array = array.filter((x, i) => i !== index);
-        render();
+        render(array);
     }
 }
 
@@ -40,7 +41,7 @@ function edit (element) {
     if (isEditingDone) {
         isEditingDone = false;
         input.disabled = true;
-        let index = parseInt(element.getAttribute('id').split('-')[1]);
+        index = parseInt(element.getAttribute('id').split('-')[1]);
         document.getElementById(`box-${index}`).innerHTML = `
             <form class="form" id="form-${index}" onsubmit="update(this)">
               <input type="text" class="titleHere" id="titleHere-${index}" autocomplete="off" spellcheck="false">
@@ -55,15 +56,24 @@ function edit (element) {
 function update(element) {
     isEditingDone = true;
     input.disabled = false;
-    let index = parseInt(element.getAttribute('id').split('-')[1]);
+    index = parseInt(element.getAttribute('id').split('-')[1]);
     array[index] = document.getElementById(`titleHere-${index}`).value;
-    render();
+    render(array);
 }
 
 function removeEdit(element) {
     isEditingDone = true;
     input.disabled = false;
-    let index = parseInt(element.getAttribute('id').split('-')[1]);
+    index = parseInt(element.getAttribute('id').split('-')[1]);
     array = array.filter((x, i) => i !== index);
-    render();
+    render(array);
+}
+
+search.onkeyup = () => {
+    let sentence = search.value;
+    let newArray = array.filter((x) => {
+        console.log(x.includes(sentence));
+        return x.includes(sentence);
+    })
+    render(newArray);
 }
