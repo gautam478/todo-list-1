@@ -11,6 +11,7 @@ function render(arr){
     output.innerHTML = '';
     for (let i = 0; i < arr.length; i++) output.innerHTML += addTask(i, arr[i]);
     input.value = '';
+    console.log(array.length)
 }
 
 function addTask(index, title) {
@@ -25,7 +26,9 @@ function addTask(index, title) {
 form.onsubmit = () => {
     if (input.value !== '' && isEditingDone) {
         array.push(input.value);
+        console.log(array);
         render(array);
+        console.log(array);
     }
 }
 
@@ -41,6 +44,7 @@ function edit (element) {
     if (isEditingDone) {
         isEditingDone = false;
         input.disabled = true;
+        search.disabled = true;
         index = parseInt(element.getAttribute('id').split('-')[1]);
         document.getElementById(`box-${index}`).innerHTML = `
             <form class="form" id="form-${index}" onsubmit="update(this)">
@@ -56,6 +60,7 @@ function edit (element) {
 function update(element) {
     isEditingDone = true;
     input.disabled = false;
+    search.disabled = false;
     index = parseInt(element.getAttribute('id').split('-')[1]);
     array[index] = document.getElementById(`titleHere-${index}`).value;
     render(array);
@@ -64,16 +69,22 @@ function update(element) {
 function removeEdit(element) {
     isEditingDone = true;
     input.disabled = false;
+    search.disabled = false;
     index = parseInt(element.getAttribute('id').split('-')[1]);
     array = array.filter((x, i) => i !== index);
     render(array);
 }
 
 search.onkeyup = () => {
-    let sentence = search.value;
-    let newArray = array.filter((x) => {
-        console.log(x.includes(sentence));
-        return x.includes(sentence);
-    })
-    render(newArray);
+    if (search.value.length >= 3) {
+        let sentence = search.value;
+        let newArray = array.filter((x) => {
+            console.log(x.includes(sentence));
+            return x.includes(sentence);
+        })
+        render(newArray);
+    }
+    else {
+        render(array);
+    }
 }
